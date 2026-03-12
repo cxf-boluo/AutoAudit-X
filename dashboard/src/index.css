@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #0a0e1a;
+  --bg-panel: rgba(12, 18, 35, 0.75);
+  --border-glass: rgba(0, 240, 255, 0.2);
+  --glow-cyan: #00f0ff;
+  --glow-purple: #a855f7;
+  --glow-orange: #ff6b35;
+  --text-dim: rgba(255, 255, 255, 0.6);
+  --text-bright: rgba(255, 255, 255, 0.95);
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--text-bright);
+  background: var(--bg-deep);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+@theme inline {
+  --color-cyan: #00f0ff;
+  --color-purple: #a855f7;
+  --color-orange: #ff6b35;
+}
+
+.glass {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 24px rgba(0, 240, 255, 0.06);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* 六角网格背景 */
+.hex-bg {
+  background-image: 
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, transparent 0%, rgba(10, 14, 26, 0.98) 100%);
+  background-size: 100% 100%;
+}
+
+.hex-grid {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill='none' stroke='rgba(0,240,255,0.06)' stroke-width='0.5'%3E%3Cpath d='M14 0v17M0 8.5v17M7 0v17M21 0v17M0 25v17M7 25v17M14 25v17M21 25v17'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 28px 49px;
+  opacity: 0.6;
+}
+
+/* 扫描线动画 */
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.scan-line {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 脉冲光晕 */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* 浮动粒子点 */
+.particle-dots {
+  background-image: radial-gradient(1.5px 1.5px at 20px 30px, rgba(0,240,255,0.25), transparent),
+    radial-gradient(1.5px 1.5px at 40px 70px, rgba(168,85,247,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 50px 160px, rgba(0,240,255,0.15), transparent),
+    radial-gradient(1.5px 1.5px at 90px 40px, rgba(255,107,53,0.15), transparent),
+    radial-gradient(1.5px 1.5px at 130px 80px, rgba(0,240,255,0.2), transparent);
+  background-size: 200px 200px;
+  animation: particle-float 20s linear infinite;
+}
+
+@keyframes particle-float {
+  0% { background-position: 0 0, 40px 70px, 80px 160px, 120px 40px, 160px 80px; }
+  100% { background-position: 200px 0, 240px 70px, 280px 160px, 320px 40px, 360px 80px; }
+}
