@@ -1,7 +1,13 @@
 # AutoAudit-X · CyberNexus
 
+![Status](https://img.shields.io/badge/status-WIP%20🚧-orange?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+
 > **Multi-Agent Intelligent Android Security Audit System**  
 > 多智能体驱动的 Android 安全自动化审计平台
+
+> [!WARNING]
+> 🚧 **本项目目前仍在积极开发中，部分功能尚未完善，接口与结构可能随时变更。** 欢迎 Star 关注进展！
 
 ---
 
