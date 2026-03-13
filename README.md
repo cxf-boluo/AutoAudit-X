@@ -62,11 +62,11 @@ Open [http://localhost:5174](http://localhost:5174) to view the dashboard.
 
 ### 🎬 演示
 
-![AutoAudit-X 大屏演示](docs/demo.webp)
+![AutoAudit-X 大屏演示](docs/demo_zh.webp)
 
 ### 📸 截图
 
-![大屏截图](docs/screenshot.png)
+![大屏截图](docs/screenshot_zh.png)
 
 ### ✨ 功能模块
 
