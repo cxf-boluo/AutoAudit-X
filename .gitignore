@@ -32,6 +32,7 @@ blackhat-UAS.md
 # Editor
 .vscode/
 .idea/
+.specstory/
 *.swp
 *.swo
 
