@@ -50,12 +50,26 @@
   },
   "demoData": {
     "messages": [
-      "Directive: Locate external calls, trace Intents, identify WebView injection points",
-      "Unpack complete: Intercepted plaintext DEX, fixed missing method bodies, output code baseline",
-      "Found 1clink:// Deeplink parsing, located WebViewActivity sink",
-      "Security Alert: WebView exposes @JavascriptInterface, high-risk Hook points exist",
-      "Generate verification strategy: Trigger 1clink:// with Payload via am start, consume runtime logs",
-      "Verification success: Special Payload URL executed, parameters and return values captured, vulnerability confirmed High Risk"
+      "Directive: Locate external entry points, trace Intents, identify WebView injection surfaces",
+      "Target packer detected: Bangbang Enterprise Edition, activating ART ClassLinker observation chain",
+      "LoadMethod interception active, captured 3 deferred CodeItem restorations, entering DEX repair pipeline",
+      "Unpack complete: Intercepted 12 plaintext DEX files, repaired 847 method bodies, code baseline exported",
+      "Manifest scan done: Found 14 exported Activities, 7 with intent-filters",
+      "Found 1clink:// Deeplink scheme parsing logic, located WebViewActivity critical sink",
+      "Security Alert: WebView exposes @JavascriptInterface, executeCommand() directly calls Runtime.exec()",
+      "Request deep analysis of executeCommand call chain — confirm if parameter validation or auth exists",
+      "Call chain traced: cmd parameter reaches exec() unfiltered — no auth, no whitelist, no sandbox",
+      "Also found FileReaderBridge.readFile() exposed to JS — arbitrary read of /data directory possible",
+      "Generate verification strategy: Trigger 1clink:// via am start with injected Payload, consume runtime logs",
+      "Deeplink trigger successful: WebViewActivity launched, URL loading flow captured by HookLogic",
+      "JS injection verified: executeCommand('system:id') returned uid=10086, command execution confirmed",
+      "Expand verification scope: Test FileReaderBridge, attempt read of /data/data/com.geely.vehicle.control/shared_prefs/",
+      "File read PoC successful: Obtained token.xml containing plaintext access_token and vehicle_bindid",
+      "Evaluate attack chain completeness: Deeplink → WebView → JS Bridge → RCE / File Read",
+      "Attack chain assessment complete: Both independent chains exploitable with zero interaction, CVSS 9.8 Critical recommended",
+      "Supplementary evidence: Exported 3 DEX diffs and hook trace logs for PoC replay and reproduction",
+      "Generate full PoC script including adb trigger commands and expected response assertions",
+      "PoC script generated: Contains Deeplink trigger, JS injection, and response validation — supports one-click reproduction"
     ],
     "vulns": [
       "WebView exposes dangerous interface",

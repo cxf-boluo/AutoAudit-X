@@ -51,11 +51,25 @@
   "demoData": {
     "messages": [
       "指令下发：定位外部唤起，追踪 Intent，识别 WebView 注入点",
-      "脱壳完成：截获明文 DEX，修复方法体缺失，已输出可分析代码基线",
-      "发现 1clink:// Deeplink 解析，定位到 WebViewActivity 关键 sink",
-      "危险告警：WebView 暴露 @JavascriptInterface，存在高危 Hook 点",
+      "检测到目标加固方案：梆梆企业版，正在激活 ART ClassLinker 观测链路",
+      "LoadMethod 拦截启动，已捕获 3 个延迟还原 CodeItem，进入 DEX 修复流程",
+      "脱壳完成：截获明文 DEX 12个，修复方法体 847 处，已输出可分析代码基线",
+      "Manifest 扫描完成：发现 exported Activity 14个，含 intent-filter 的 7 个",
+      "发现 1clink:// Deeplink scheme 解析逻辑，定位到 WebViewActivity 关键 sink",
+      "危险告警：WebView 暴露 @JavascriptInterface，executeCommand() 直通 Runtime.exec()",
+      "请深入分析 executeCommand 调用链，确认是否存在参数校验与权限拦截",
+      "调用链追踪完成：cmd 参数未经任何过滤直达 exec()，无鉴权、无白名单、无沙箱隔离",
+      "同时发现 FileReaderBridge.readFile() 接口，直接暴露为 JS 可调用，可任意读取 /data 目录",
       "生成验证策略：通过 am start 触发 1clink:// 注入 Payload，消费运行时日志",
-      "验证成功：特制 Payload URL 已执行，调用参数与返回值已捕获，漏洞确认高危"
+      "Deeplink 触发成功：WebViewActivity 已启动，URL 加载流被 HookLogic 捕获",
+      "JS 注入验证：executeCommand('system:id') 返回 uid=10086，确认命令执行成功",
+      "扩大验证面：测试 FileReaderBridge，尝试读取 /data/data/com.geely.vehicle.control/shared_prefs/",
+      "文件读取 PoC 成功：已获取 token.xml，含明文 access_token 与 vehicle_bindid",
+      "请评估攻击链完整性：Deeplink → WebView → JS Bridge → RCE / 文件读取",
+      "攻击链评估完成：两条独立链路均可从零交互实现远程利用，CVSS 评分建议 9.8 Critical",
+      "补充证据：已导出 3 份 DEX diff 与 hook trace 日志，可用于 PoC 回放与复现验证",
+      "请生成完整 PoC 脚本，包含 adb 触发命令与预期响应断言",
+      "PoC 脚本已生成：含 Deeplink 触发、JS 注入、响应校验三阶段，支持一键复现"
     ],
     "vulns": [
       "WebView 暴露危险接口",
