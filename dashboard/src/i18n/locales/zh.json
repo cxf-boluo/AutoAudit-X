@@ -1,0 +1,66 @@
+{
+  "header": {
+    "title": "AUTOAUDIT-X",
+    "target": "目标",
+    "elapsed": "已用时间"
+  },
+  "agentMatrix": {
+    "title": "智能体矩阵",
+    "roles": {
+      "orchestrator": "策略编排与证据收敛",
+      "static": "代码语义理解",
+      "runtime": "动态触发与证据采集",
+      "recovery": "脱壳与运行时恢复"
+    }
+  },
+  "liveFeed": {
+    "title": "实时通信流",
+    "ago_s": "{{count}}秒前",
+    "ago_m": "{{count}}分钟前"
+  },
+  "threatPanel": {
+    "title": "威胁分析",
+    "vulnerabilities": "漏洞列表",
+    "codeView": "代码视图",
+    "codeComment": "⚠ 危险：未校验前端调用来源，直接执行高权限操作",
+    "status": {
+      "confirmed": "已确认",
+      "verifying": "验证中",
+      "candidate": "待选"
+    }
+  },
+  "timeline": {
+    "title": "任务时间轴",
+    "complete": "已完成",
+    "phases": {
+      "unpack": "脱壳",
+      "analyze": "分析",
+      "verify": "验证",
+      "report": "报告"
+    }
+  },
+  "topology": {
+    "title": "◈ 神经链路拓扑 ◈",
+    "nodes": {
+      "A": "策略主控",
+      "B": "静态分析",
+      "C": "动态验证",
+      "D": "脱壳引擎"
+    }
+  },
+  "demoData": {
+    "messages": [
+      "指令下发：定位外部唤起，追踪 Intent，识别 WebView 注入点",
+      "脱壳完成：截获明文 DEX，修复方法体缺失，已输出可分析代码基线",
+      "发现 1clink:// Deeplink 解析，定位到 WebViewActivity 关键 sink",
+      "危险告警：WebView 暴露 @JavascriptInterface，存在高危 Hook 点",
+      "生成验证策略：通过 am start 触发 1clink:// 注入 Payload，消费运行时日志",
+      "验证成功：特制 Payload URL 已执行，调用参数与返回值已捕获，漏洞确认高危"
+    ],
+    "vulns": [
+      "WebView 暴露危险接口",
+      "Deeplink (1clink://) 劫持",
+      "任意文件读取/高维提权"
+    ]
+  }
+}

@@ -16,7 +16,12 @@ function App() {
     const interval = setInterval(() => {
       setMessages((prev) => {
         const baseMsg = DEMO_FEED[index % DEMO_FEED.length];
-        const nextMsg = { ...baseMsg, id: `${baseMsg.id}-${Date.now()}`, ts: Date.now() };
+        const nextMsg = { 
+          ...baseMsg, 
+          id: `${baseMsg.id}-${Date.now()}`, 
+          ts: Date.now(),
+          originalIndex: index % DEMO_FEED.length
+        };
         const newMessages = [...prev, nextMsg];
         if (newMessages.length > 50) newMessages.shift(); // keep feed from growing indefinitely
         return newMessages;

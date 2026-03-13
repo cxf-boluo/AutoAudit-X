@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import type { TimelinePhase } from "../data/demo";
 import { PHASES, OVERALL_PROGRESS } from "../data/demo";
 
 export function Timeline({ phases = PHASES, progress = OVERALL_PROGRESS }: { phases?: TimelinePhase[]; progress?: number }) {
+  const { t } = useTranslation();
   return (
     <div className="glass rounded-xl p-4 h-full flex flex-col">
-      <h3 className="text-[11px] uppercase tracking-[0.2em] text-white/60 mb-4 font-mono">MISSION TIMELINE</h3>
+      <h3 className="text-[11px] uppercase tracking-[0.2em] text-white/60 mb-4 font-mono">{t('timeline.title')}</h3>
       <div className="flex items-center gap-3 mb-4">
         {phases.map((p, i) => (
           <div key={p.id} className="flex items-center gap-1.5">
@@ -23,7 +25,7 @@ export function Timeline({ phases = PHASES, progress = OVERALL_PROGRESS }: { pha
                 p.status === "done" ? "text-white/70" : p.status === "current" ? "text-[#00f0ff]" : "text-white/40"
               }`}
             >
-              {p.label}
+              {t(`timeline.phases.${p.id}`)}
             </span>
             {p.time && <span className="text-[11px] text-white/50">({p.time})</span>}
             {i < phases.length - 1 && <span className="text-white/30 mx-1">━</span>}
@@ -38,7 +40,7 @@ export function Timeline({ phases = PHASES, progress = OVERALL_PROGRESS }: { pha
           transition={{ duration: 1, delay: 0.3 }}
         />
       </div>
-      <p className="text-[11px] text-white/50 mt-2 font-mono">{progress}% complete</p>
+      <p className="text-[11px] text-white/50 mt-2 font-mono">{progress}% {t('timeline.complete')}</p>
     </div>
   );
 }

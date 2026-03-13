@@ -1,53 +1,55 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import type { FeedMessage } from "../data/demo";
 
 const CX = 320;
 const CY = 200;
 const nodes = [
   { id: "A", label: "Orchestrator", x: CX, y: CY - 120, color: "#00f0ff" },
-  { id: "B", label: "Static", x: CX + 160, y: CY + 20, color: "#a855f7" },
-  { id: "C", label: "Runtime", x: CX - 160, y: CY + 20, color: "#ff6b35" },
-  { id: "D", label: "Recovery", x: CX, y: CY + 140, color: "#22c55e" },
+  { id: "B", label: "Static Reasoner", x: CX + 160, y: CY + 20, color: "#a855f7" },
+  { id: "C", label: "Runtime Executor", x: CX - 160, y: CY + 20, color: "#ff6b35" },
+  { id: "D", label: "Recovery Engine", x: CX, y: CY + 160, color: "#22c55e" },
 ];
 
 // 气泡尺寸: W=188(±94) H=50(±25) TAIL_H=10
 // 尾巴尖端公式: left→(bx-104,by), down→(bx,by+35), up→(bx,by-35)
 // 各节点位置: A(320,80) B(480,220) C(160,220) D(320,340) 半径=28
-const BUBBLE_CONFIG: Record<string, {
-  bx: number;
-  by: number;
-  tail: "up" | "down" | "left" | "right";
-}> = {
-  // A(320,80): 气泡在节点右侧, left尾巴尖端→(452-104=348=320+28, 80) ✓
-  A: { bx: 452, by: 80, tail: "left" },
-  // B(480,220): 气泡在节点右侧, left尾巴尖端→(612-104=508=480+28, 220) ✓ (需viewBox到720)
-  B: { bx: 612, by: 220, tail: "left" },
-  // C(160,220): 气泡在节点左侧, right尾巴尖端→(28+104=132=160-28, 220) ✓ (需viewBox从-80开始)
-  C: { bx: 28, by: 220, tail: "right" },
-  // D(320,340): 气泡在节点右侧, left尾巴尖端→(452-104=348=320+28, 340) ✓
-  D: { bx: 452, by: 340, tail: "left" },
-};
-
-const BOX_W = 188;
-const BOX_H = 50;
+// 气泡配置
+const BOX_MIN_H = 40;
 const BOX_R = 8;
 const TAIL_W = 14;
 const TAIL_H = 10;
 
-// 根据文本长度估算合适的气泡高度
-function estimateBubbleHeight(text: string): number {
-  const contentW = BOX_W - 20; // 与 foreignObject width 一致
-  // 10px/字符: CJK字符约12px，拉丁字符约8px，混合平均约10px
-  const avgCharW = 10;
-  const charsPerLine = Math.floor(contentW / avgCharW);
-  const lines = Math.max(1, Math.ceil(text.length / charsPerLine));
-  // lineHeight 1.55 * fontSize 11 ≈ 17px/行；加 16px 上下内边距
-  return Math.max(36, lines * 18 + 14);
+const BUBBLE_CONFIG_TEMPLATE = {
+  A: { tail: "left" as const },    // 气泡在右
+  B: { tail: "left" as const },    // 气泡在右
+  C: { tail: "right" as const },   // 气泡在左
+  D: { tail: "right" as const },   // 气泡在左
+};
+
+// 根据文本长度和内容精确估算气泡宽高，解决中英文字符宽度差异以及折行溢出问题
+function estimateBubbleDims(text: string) {
+  let textWidth = 0;
+  for (let i = 0; i < text.length; i++) {
+    textWidth += text.charCodeAt(i) > 255 ? 12 : 7.2;
+  }
+  
+  const maxContentW = 240; 
+  const paddingX = 24; 
+  const paddingY = 24; 
+  
+  const contentW = Math.min(maxContentW, Math.max(60, textWidth));
+  const estimatedW = contentW + paddingX;
+  
+  const lines = Math.ceil((textWidth * 1.15) / contentW);
+  const estimatedH = Math.max(BOX_MIN_H, lines * 17 + paddingY);
+  
+  return { w: estimatedW, h: estimatedH };
 }
 
-function buildBubblePath(tail: "up" | "down" | "left" | "right", boxH = BOX_H) {
-  const hw = BOX_W / 2;
+function buildBubblePath(tail: "up" | "down" | "left" | "right", boxW: number, boxH: number) {
+  const hw = boxW / 2;
   const hh = boxH / 2;
   const r = BOX_R;
   const tw = TAIL_W / 2;
@@ -155,15 +157,17 @@ const avatarType: Record<string, string> = {
 };
 
 export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
+  const { t } = useTranslation();
   const { activeEdgeKeys, latestByEdge, latestMessage } = useActiveEdges(messages);
 
   return (
     <div className="glass rounded-2xl p-6 h-full flex flex-col">
       <h3 className="text-[11px] uppercase tracking-[0.25em] text-[#00f0ff]/90 mb-4 font-mono text-center">
-        ◈ NEURAL LINK TOPOLOGY ◈
+        {t('topology.title')}
       </h3>
       <div className="flex-1 relative min-h-[400px]">
-        <svg viewBox="-80 0 800 420" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+        {/* 扩大 viewBox 以防止左右节点的气泡在边界处被截断 */}
+        <svg viewBox="-200 0 1040 420" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#00f0ff" stopOpacity="0.2" />
@@ -192,7 +196,6 @@ export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
             const [x2, y2] = getPos(e.to);
             const key = edgeKey(e.from, e.to);
             const isActive = activeEdgeKeys.has(key);
-            const latest = latestByEdge[key];
             const isLatestEdge = latestMessage && latestMessage.from === e.from && latestMessage.to === e.to;
             
 
@@ -244,21 +247,44 @@ export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
                   </motion.circle>
                 )}
                 
-                 {/* 将对话气泡生成放在发送者小节点外侧固定区域 */}
-                {isActive && isLatestEdge && latest && (() => {
-                  const cfg = BUBBLE_CONFIG[e.from];
+                {/* 将对话气泡生成放在发送者小节点外侧固定区域 */}
+                {isActive && isLatestEdge && latestMessage && (() => {
+                  const cfg = BUBBLE_CONFIG_TEMPLATE[e.from as keyof typeof BUBBLE_CONFIG_TEMPLATE];
+                  
                   if (!cfg) return null;
-                  const { bx, by, tail } = cfg;
-                  const bubbleH = estimateBubbleHeight(latest.text);
-                  const path = buildBubblePath(tail, bubbleH);
-                  const hw = BOX_W / 2;
-                  const hh = bubbleH / 2;
+
+                  const senderNode = nodes.find(n => n.id === e.from);
+                  const bubbleColor = senderNode ? senderNode.color : "rgba(0,240,255,0.85)";
+                  
+                  const displayText = t(`demoData.messages.${latestMessage.originalIndex ?? 0}`);
+                  const { w: boxW, h: boxH } = estimateBubbleDims(displayText);
+                  const path = buildBubblePath(cfg.tail, boxW, boxH);
+                  
+                  const hw = boxW / 2;
+                  const hh = boxH / 2;
+                  
+                  let bx = x1;
+                  let by = y1;
+                  
+                  if (cfg.tail === "left") {
+                    bx = x1 + 28 + 10 + hw;
+                    by = y1;
+                  } else if (cfg.tail === "right") {
+                    bx = x1 - 28 - 10 - hw;
+                    by = y1;
+                  } else if (cfg.tail === "up") {
+                    bx = x1;
+                    by = y1 + 28 + 10 + hh;
+                  } else if (cfg.tail === "down") {
+                    bx = x1;
+                    by = y1 - 28 - 10 - hh;
+                  }
                   return (
                     <g transform={`translate(${bx},${by})`}>
                       <motion.path
                         d={path}
                         fill="rgba(10,14,26,0.97)"
-                        stroke="rgba(0,240,255,0.85)"
+                        stroke={bubbleColor}
                         strokeWidth="1.4"
                         strokeLinejoin="round"
                         filter="url(#glow)"
@@ -266,12 +292,11 @@ export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.3, type: "spring", damping: 18 }}
                       />
-                      {/* 使用 foreignObject 完整展示文字，自动换行不截断 */}
                       <foreignObject
-                        x={-hw + 10}
-                        y={-hh + 8}
-                        width={BOX_W - 20}
-                        height={bubbleH - 16}
+                        x={-hw + 12}
+                        y={-hh + 12}
+                        width={boxW - 24}
+                        height={boxH - 24}
                       >
                         <div
                           style={{
@@ -282,9 +307,12 @@ export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
                             lineHeight: "1.55",
                             wordBreak: "break-word",
                             whiteSpace: "normal",
+                            display: "flex",
+                            alignItems: "center",
+                            height: "100%",
                           }}
                         >
-                          {latest.text}
+                          {displayText}
                         </div>
                       </foreignObject>
                     </g>
@@ -320,7 +348,7 @@ export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
                 fontSize="11"
                 fontFamily="JetBrains Mono, monospace"
               >
-                {n.label}
+                {t(`topology.nodes.${n.id}`)}
               </text>
             </g>
           ))}

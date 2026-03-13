@@ -1,0 +1,66 @@
+{
+  "header": {
+    "title": "AUTOAUDIT-X",
+    "target": "TARGET",
+    "elapsed": "ELAPSED"
+  },
+  "agentMatrix": {
+    "title": "AGENT MATRIX",
+    "roles": {
+      "orchestrator": "Strategic Orchestration & Evidence Convergence",
+      "static": "Code Semantic Understanding",
+      "runtime": "Dynamic Triggering & Evidence Collection",
+      "recovery": "Unpacking & Runtime Recovery"
+    }
+  },
+  "liveFeed": {
+    "title": "LIVE COMM FEED",
+    "ago_s": "{{count}}s ago",
+    "ago_m": "{{count}}m ago"
+  },
+  "threatPanel": {
+    "title": "THREAT ANALYSIS",
+    "vulnerabilities": "Vulnerabilities",
+    "codeView": "Code View",
+    "codeComment": "⚠ DANGER: Source of frontend call not validated, executing high-privilege operation directly",
+    "status": {
+      "confirmed": "CONFIRMED",
+      "verifying": "VERIFYING",
+      "candidate": "CANDIDATE"
+    }
+  },
+  "timeline": {
+    "title": "MISSION TIMELINE",
+    "complete": "complete",
+    "phases": {
+      "unpack": "UNPACK",
+      "analyze": "ANALYZE",
+      "verify": "VERIFY",
+      "report": "REPORT"
+    }
+  },
+  "topology": {
+    "title": "◈ NEURAL LINK TOPOLOGY ◈",
+    "nodes": {
+      "A": "Orchestrator",
+      "B": "Static Reasoner",
+      "C": "Runtime Executor",
+      "D": "Recovery Engine"
+    }
+  },
+  "demoData": {
+    "messages": [
+      "Directive: Locate external calls, trace Intents, identify WebView injection points",
+      "Unpack complete: Intercepted plaintext DEX, fixed missing method bodies, output code baseline",
+      "Found 1clink:// Deeplink parsing, located WebViewActivity sink",
+      "Security Alert: WebView exposes @JavascriptInterface, high-risk Hook points exist",
+      "Generate verification strategy: Trigger 1clink:// with Payload via am start, consume runtime logs",
+      "Verification success: Special Payload URL executed, parameters and return values captured, vulnerability confirmed High Risk"
+    ],
+    "vulns": [
+      "WebView exposes dangerous interface",
+      "Deeplink (1clink://) hijacking",
+      "Arbitrary file read / Privilege escalation"
+    ]
+  }
+}
