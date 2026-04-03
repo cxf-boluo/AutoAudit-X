@@ -90,6 +90,10 @@ const edges = [
   { from: "D", to: "A" },
   { from: "B", to: "A" },
   { from: "C", to: "A" },
+  { from: "A", to: "A" },
+  { from: "B", to: "B" },
+  { from: "C", to: "C" },
+  { from: "D", to: "D" },
 ];
 
 function getPos(id: string) {
@@ -158,7 +162,7 @@ const avatarType: Record<string, string> = {
 
 export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
   const { t } = useTranslation();
-  const { activeEdgeKeys, latestByEdge, latestMessage } = useActiveEdges(messages);
+  const { activeEdgeKeys, latestMessage } = useActiveEdges(messages);
 
   return (
     <div className="glass rounded-2xl p-6 h-full flex flex-col">
@@ -256,7 +260,9 @@ export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
                   const senderNode = nodes.find(n => n.id === e.from);
                   const bubbleColor = senderNode ? senderNode.color : "rgba(0,240,255,0.85)";
                   
-                  const displayText = t(`demoData.messages.${latestMessage.originalIndex ?? 0}`);
+                  const displayText = latestMessage.originalIndex !== undefined 
+                    ? t(`demoData.messages.${latestMessage.originalIndex}`)
+                    : latestMessage.text;
                   const { w: boxW, h: boxH } = estimateBubbleDims(displayText);
                   const path = buildBubblePath(cfg.tail, boxW, boxH);
                   
@@ -272,10 +278,10 @@ export function NeuralTopology({ messages }: { messages: FeedMessage[] }) {
                   } else if (cfg.tail === "right") {
                     bx = x1 - 28 - 10 - hw;
                     by = y1;
-                  } else if (cfg.tail === "up") {
+                  } else if ((cfg as any).tail === "up") {
                     bx = x1;
                     by = y1 + 28 + 10 + hh;
-                  } else if (cfg.tail === "down") {
+                  } else if ((cfg as any).tail === "down") {
                     bx = x1;
                     by = y1 - 28 - 10 - hh;
                   }

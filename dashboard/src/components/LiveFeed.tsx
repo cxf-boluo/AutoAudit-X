@@ -12,7 +12,11 @@ export function LiveFeed({ messages }: { messages: FeedMessage[] }) {
   }
 
   const getMessageTranslation = (m: FeedMessage) => {
-    return t(`demoData.messages.${m.originalIndex ?? 0}`);
+    // If originalIndex exists, it's demo data using i18n. Otherwise it's live text.
+    if (m.originalIndex !== undefined) {
+      return t(`demoData.messages.${m.originalIndex}`);
+    }
+    return m.text;
   };
 
   return (

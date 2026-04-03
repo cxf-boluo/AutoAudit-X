@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 import { Header } from "./components/Header";
 import { AgentMatrix } from "./components/AgentMatrix";
 import { NeuralTopology } from "./components/NeuralTopology";
@@ -8,27 +9,27 @@ import { Timeline } from "./components/Timeline";
 import { AGENTS, DEMO_FEED } from "./data/demo";
 import type { FeedMessage } from "./data/demo";
 
+const SOCKET_SERVER_URL = "http://localhost:3001";
+
 function App() {
   const [messages, setMessages] = useState<FeedMessage[]>([DEMO_FEED[0]]);
 
   useEffect(() => {
-    let index = 1;
-    const interval = setInterval(() => {
+    // 建立 WebSocket 连接
+    const socket = io(SOCKET_SERVER_URL);
+
+    // 监听初始或追加的消息
+    socket.on("new_log", (newMsg: FeedMessage) => {
       setMessages((prev) => {
-        const baseMsg = DEMO_FEED[index % DEMO_FEED.length];
-        const nextMsg = { 
-          ...baseMsg, 
-          id: `${baseMsg.id}-${Date.now()}`, 
-          ts: Date.now(),
-          originalIndex: index % DEMO_FEED.length
-        };
-        const newMessages = [...prev, nextMsg];
-        if (newMessages.length > 50) newMessages.shift(); // keep feed from growing indefinitely
+        const newMessages = [...prev, newMsg];
+        if (newMessages.length > 50) newMessages.shift();
         return newMessages;
       });
-      index++;
-    }, 3000);
-    return () => clearInterval(interval);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (
