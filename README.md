@@ -34,6 +34,14 @@
 | 📊 **Threat Panel** | Vulnerability scoring and code traceability |
 | 🕒 **Mission Timeline** | Audit lifecycle progress tracking |
 
+### 🛡️ Anti-Detection Capability Base
+
+Underlying this project is a customized AOSP framework that serves as the core capability base for anti-detection. The framework implements customized modifications from the native layer down to the kernel layer, achieving seamless bypass of current mainstream detection methods.
+
+Specific implementations include: filtering third-party ROM characteristic permissions, system property spoofing/hiding, debug settings hiding, SELinux policy file redirection, linker symbol stripping, and kernel procfs filtering/spoofing.
+
+![framework](docs/framework.png)
+
 ### 🚀 Quick Start
 
 ```bash
@@ -79,6 +87,14 @@ Open [http://localhost:5174](http://localhost:5174) to view the dashboard.
 | 📡 **Neural Link Topology** | 实时可视化 Agent 间通信拓扑与消息气泡 |
 | 📊 **Threat Panel** | 漏洞等级评分与代码溯源展示 |
 | 🕒 **Mission Timeline** | 审计任务生命周期进度追踪 |
+
+### 🛡️ 反检测能力基座
+
+该项目的底层使用了一个定制化的 AOSP 框架作为反检测能力的核心基座。该框架从Native层到内核层定制化修改，实现了对当前主流检测手段的完美绕过。
+
+具体实现包括过滤第三方ROM特征权限、系统属性欺骗/隐藏、调试设置隐藏、SELinux策略文件重定向、链接器符号剥离、内核Procfs过滤/伪造等
+
+![framework](docs/framework.png)
 
 ### 🚀 快速开始
 
