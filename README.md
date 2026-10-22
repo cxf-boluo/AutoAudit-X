@@ -81,7 +81,7 @@ Deemed by the vendor to duplicate an existing external report; no separate ID wa
 
 AX is organized into four layers — **Agent Layer**, **ROM Layer**, **Collaboration Layer**, and **Hardware Layer**:
 
-![AutoAudit-X overall architecture: Agent layer with ROM, collaboration, and hardware support](docs/architecture.svg)
+![AutoAudit-X overall architecture: Agent layer with ROM, collaboration, and hardware support](docs/architecture-en.svg)
 
 Figure 1  AutoAudit-X overall architecture: Agent layer with ROM, collaboration, and hardware support
 
@@ -95,7 +95,7 @@ Figure 1  AutoAudit-X overall architecture: Agent layer with ROM, collaboration,
 
 HookLogic-X applies system-level prebuild modifications to AOSP 14 (PixelBuilds-derived, kernel msm-4.14), modifying **22 files** across **kernel VFS, ART runtime, Framework services, and BoringSSL**. The core design philosophy: **sink every capability into the ROM itself, making the attack surface part of the system**.
 
-![Android custom ROM system-level attack/defense platform: overall architecture and attack chain](docs/rom-architecture.svg)
+![Android custom ROM system-level attack/defense platform: overall architecture and attack chain](docs/rom-architecture-en.svg)
 
 Figure 2  Android custom ROM system-level attack/defense platform: overall architecture and attack chain
 
@@ -202,7 +202,7 @@ From the target app’s perspective:
 
 ### 3.3 Three-Agent Architecture: Fusion and Isolation
 
-![AX Agent-layer workflow: from reconnaissance to verdict](docs/agent-workflow.svg)
+![AX Agent-layer workflow: from reconnaissance to verdict](docs/agent-workflow-en.svg)
 
 Figure 3  AX Agent-layer workflow: from reconnaissance to verdict
 
@@ -374,7 +374,7 @@ The BLE research bench is AX’s core software-hardware infrastructure, providin
 
 #### 3.5.3 Hardware Collaboration Workflow
 
-![BLE digital key three attack paths: replay / relay / protocol flaw exploitation](docs/ble-attack-paths.svg)
+![BLE digital key three attack paths: replay / relay / protocol flaw exploitation](docs/ble-attack-paths-en.svg)
 
 Figure 4  BLE digital key three attack paths: replay / relay / protocol flaw exploitation
 

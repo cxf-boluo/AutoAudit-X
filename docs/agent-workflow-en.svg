@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1300" viewBox="0 0 1200 1300">
+  <desc>AX Agent-Layer Pipeline — Brain → recon → vuln_agent pool → verify → verdict, academic black-and-white line diagram</desc>
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="8" refX="7.5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#000"/>
+    </marker>
+    <style>
+      .box  { fill:none; stroke:#000000; stroke-width:1; }
+      .box2 { fill:none; stroke:#000000; stroke-width:1.6; }
+      .arr  { fill:none; stroke:#000000; stroke-width:1.5; }
+      .t1 { font:700 22px "Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; fill:#000; }
+      .hd { font:700 14px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .bd { font:400 12px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .sm { font:400 11px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .mo { font:400 11px "SF Mono",Menlo,Consolas,"Courier New",monospace; fill:#000; }
+      .it { font:italic 400 10.5px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .lb { font:400 10.5px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+    </style>
+  </defs>
+
+  <!-- title -->
+  <text x="600" y="48" text-anchor="middle" class="t1">AX Agent-Layer Pipeline: From Recon to Verdict</text>
+
+  <!-- ==================== Brain ==================== -->
+  <rect x="200" y="80" width="800" height="130" class="box2"/>
+  <text x="220" y="112" class="hd" font-size="15">Brain (Orchestrator)</text>
+  <text x="220" y="140" class="bd">pool scheduling (dynamically scale vuln_agent pool)</text>
+  <text x="220" y="162" class="bd">resource arbitration (adb / BLE global mutexes)</text>
+  <text x="220" y="184" class="bd">reflection &amp; postmortem</text>
+
+  <!-- arrow down -->
+  <path d="M600,210 V250" class="arr" marker-end="url(#ar)"/>
+
+  <!-- ==================== recon ==================== -->
+  <rect x="200" y="250" width="800" height="150" class="box"/>
+  <text x="220" y="282" class="hd">recon <tspan class="bd" font-weight="400">(pre-recon, single serial instance)</tspan></text>
+  <text x="220" y="310" class="bd">Phase 1 packer identification → Phase 2 unpack + decompile + persist artifacts</text>
+  <text x="220" y="338" class="sm">output: <tspan class="mo">workspace/&lt;pkg&gt;/</tspan> code baseline / Manifest / resource files</text>
+  <text x="220" y="362" class="it">provides factual baseline for downstream vuln_agents</text>
+
+  <!-- arrow with label -->
+  <path d="M600,400 V440" class="arr" marker-end="url(#ar)"/>
+  <text x="615" y="425" class="lb">Brain spawns vuln_agent pool per component count</text>
+
+  <!-- ==================== vuln_agent pool ==================== -->
+  <rect x="200" y="440" width="800" height="280" class="box2"/>
+  <text x="220" y="472" class="hd">vuln_agent_1..N <tspan class="bd" font-weight="400">(elastic worker pool)</tspan></text>
+
+  <rect x="220" y="490" width="760" height="56" class="box"/>
+  <text x="236" y="514" class="mo">vuln_agent_1 + toolkit_1</text>
+  <text x="236" y="534" class="sm">→ Component_A</text>
+
+  <rect x="220" y="556" width="760" height="56" class="box"/>
+  <text x="236" y="580" class="mo">vuln_agent_2 + toolkit_2</text>
+  <text x="236" y="600" class="sm">→ Component_B</text>
+
+  <rect x="220" y="622" width="760" height="56" class="box"/>
+  <text x="236" y="646" class="mo">vuln_agent_N + toolkit_N</text>
+  <text x="236" y="666" class="sm">→ Component_N</text>
+
+  <text x="220" y="702" class="it">workers mutually unaware; toolkit instances dedicated; adb/BLE arbitrated by Brain</text>
+
+  <!-- arrow with label -->
+  <path d="M600,720 V760" class="arr" marker-end="url(#ar)"/>
+  <text x="615" y="745" class="lb">after each worker completes its audit</text>
+
+  <!-- ==================== verify ==================== -->
+  <rect x="200" y="760" width="800" height="150" class="box"/>
+  <text x="220" y="792" class="hd">verify <tspan class="bd" font-weight="400">(independent instance, three-way isolation)</tspan></text>
+  <text x="220" y="820" class="bd">information isolation (blind) / perspective isolation (developer · attacker · adversarial) / model isolation (heterogeneous)</text>
+  <text x="220" y="848" class="sm">independently re-examines vuln_agent conclusions; shields raw reasoning trace, evidence only</text>
+  <text x="220" y="872" class="it">mitigates confirmation bias &amp; circular reasoning</text>
+
+  <!-- arrow down -->
+  <path d="M600,910 V950" class="arr" marker-end="url(#ar)"/>
+
+  <!-- ==================== Verdict ==================== -->
+  <rect x="200" y="950" width="800" height="280" class="box2"/>
+  <text x="220" y="982" class="hd" font-size="15">Verdict</text>
+
+  <rect x="220" y="1000" width="760" height="56" class="box"/>
+  <text x="236" y="1026" class="bd" font-weight="700">PASSED</text>
+  <text x="236" y="1046" class="sm">→ write to vulnerability database</text>
+
+  <rect x="220" y="1066" width="760" height="56" class="box"/>
+  <text x="236" y="1092" class="bd" font-weight="700">FALSE_POSITIVE</text>
+  <text x="236" y="1112" class="sm">→ roll back, log false positive (feeds Brain reflection)</text>
+
+  <rect x="220" y="1132" width="760" height="56" class="box"/>
+  <text x="236" y="1158" class="bd" font-weight="700">NEED_MORE_INFO</text>
+  <text x="236" y="1178" class="sm">→ bounce back to the originating worker for more evidence</text>
+
+  <!-- feedback arrow: NEED_MORE_INFO → back up to vuln_agent pool -->
+  <path d="M980,1160 H1100 V580 H982" class="arr" marker-end="url(#ar)"/>
+  <text x="1092" y="860" text-anchor="middle" class="lb" transform="rotate(-90 1092 860)">request more evidence</text>
+
+  <!-- false-positive lesson arrow: back up to Brain -->
+  <path d="M220,1094 H140 V140 H200" class="arr" marker-end="url(#ar)"/>
+  <text x="130" y="600" text-anchor="middle" class="lb" transform="rotate(-90 130 600)">false-positive feedback</text>
+</svg>

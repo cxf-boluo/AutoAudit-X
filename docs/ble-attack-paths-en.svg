@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1550" viewBox="0 0 1600 1550">
+  <desc>BLE Vehicle-Key Three Attack Paths: Replay / Relay / Protocol Flaw Exploitation, academic black-and-white line diagram</desc>
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="8" refX="7.5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#000"/>
+    </marker>
+    <style>
+      .box  { fill:none; stroke:#000000; stroke-width:1; }
+      .box2 { fill:none; stroke:#000000; stroke-width:1.6; }
+      .arr  { fill:none; stroke:#000000; stroke-width:1.5; }
+      .dot  { fill:none; stroke:#000000; stroke-width:1.2; stroke-dasharray:2 4; stroke-linecap:round; }
+      .t1 { font:700 22px "Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; fill:#000; }
+      .st { font:700 15px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .hd { font:700 13px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .bd { font:400 12px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .sm { font:400 11px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .mo { font:400 11px "SF Mono",Menlo,Consolas,"Courier New",monospace; fill:#000; }
+      .it { font:italic 400 10.5px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .lb { font:400 10.5px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+    </style>
+  </defs>
+
+  <!-- title -->
+  <text x="800" y="46" text-anchor="middle" class="t1">BLE Vehicle-Key Attack Paths</text>
+  <text x="800" y="74" text-anchor="middle" class="it">Replay · Relay · Protocol Flaw Exploitation (shared recon → three parallel paths → verdict)</text>
+
+  <!-- ============ Stage 0 : Recon ============ -->
+  <rect x="60" y="100" width="1480" height="240" class="box2"/>
+  <text x="84" y="132" class="st">Recon: protocol intelligence</text>
+  <text x="84" y="154" class="it">Feeds all three paths</text>
+
+  <rect x="90" y="170" width="470" height="150" class="box"/>
+  <text x="106" y="196" class="hd">App reverse engineering</text>
+  <text x="106" y="220" class="sm">frame format / UUID / handle map</text>
+  <text x="106" y="244" class="sm">crypto flow (CBC / ECDH / GCM)</text>
+  <text x="106" y="268" class="mo" font-weight="700">→ flaw profile: downgrade feasibility / nonce gen / key derivation</text>
+  <text x="106" y="296" class="it">feeds Path 3</text>
+
+  <rect x="570" y="170" width="470" height="150" class="box"/>
+  <text x="586" y="196" class="hd">BLE frame capture</text>
+  <text x="586" y="220" class="sm">Ellisys air-interface / Bumble HCI snoop</text>
+  <text x="586" y="244" class="sm">broadcast payload (vendor ID / session seed / fingerprint)</text>
+  <text x="586" y="268" class="sm">session frame sequence (plaintext without pairing)</text>
+  <text x="586" y="296" class="it">feeds Paths 1 &amp; 2; reveals flaws with App analysis</text>
+
+  <rect x="1050" y="170" width="460" height="150" class="box"/>
+  <text x="1066" y="196" class="hd">Recon outputs</text>
+  <text x="1066" y="220" class="mo">ad format / session seed → key derivation</text>
+  <text x="1066" y="244" class="mo">GATT handle / command semantics</text>
+  <text x="1066" y="268" class="mo">busy/idle window profile (duty cycle / reject codes)</text>
+  <text x="1066" y="296" class="it">Flaw checklist: no freshness? nonce reuse? downgrade?</text>
+
+  <!-- ============ three fork arrows from recon ============ -->
+  <path d="M290,340 V390" class="arr" marker-end="url(#ar)"/>
+  <path d="M800,340 V390" class="arr" marker-end="url(#ar)"/>
+  <path d="M1310,340 V390" class="arr" marker-end="url(#ar)"/>
+  <text x="306" y="372" class="lb">Path 1</text>
+  <text x="816" y="372" class="lb">Path 2</text>
+  <text x="1326" y="372" class="lb">Path 3</text>
+
+  <!-- ============ Path 1 : Replay ============ -->
+  <rect x="60" y="390" width="460" height="480" class="box2"/>
+  <text x="84" y="422" class="st">Path 1: Replay</text>
+  <text x="84" y="444" class="it">Simplest when no session binding</text>
+
+  <rect x="90" y="460" width="400" height="130" class="box"/>
+  <text x="106" y="486" class="hd">Precondition</text>
+  <text x="106" y="510" class="sm">no nonce / counter / timestamp in frames</text>
+  <text x="106" y="532" class="sm">or pairing not enabled (no LE Secure Connections)</text>
+  <text x="106" y="556" class="it">determined during recon</text>
+
+  <rect x="90" y="610" width="400" height="170" class="box"/>
+  <text x="106" y="636" class="hd">Action</text>
+  <text x="106" y="660" class="sm">Bumble parses captured frames → GATT write semantics</text>
+  <text x="106" y="684" class="mo">  e.g. handle=X, value=unlock()</text>
+  <text x="106" y="708" class="sm">dongle connects as Central, resends original frames</text>
+  <text x="106" y="732" class="mo">  replay(handle, value) → vehicle</text>
+  <text x="106" y="760" class="it">no session forgery — reuses original frame semantics</text>
+
+  <rect x="90" y="800" width="400" height="50" class="box"/>
+  <text x="106" y="820" class="sm" font-weight="700">Vehicle executes → missing freshness protection</text>
+  <text x="106" y="838" class="it">Rejected → check crypto flaws in Path 3</text>
+
+  <!-- ============ Path 2 : Relay ============ -->
+  <rect x="570" y="390" width="460" height="480" class="box2"/>
+  <text x="594" y="422" class="st">Path 2: Relay</text>
+  <text x="594" y="444" class="it">Immune to application-layer encryption</text>
+
+  <rect x="600" y="460" width="400" height="110" class="box"/>
+  <text x="616" y="486" class="hd">Precondition</text>
+  <text x="616" y="510" class="sm">target App is scan-driven (finds car via broadcast)</text>
+  <text x="616" y="532" class="sm">reconnect-driven App needs MAC clone + connect race</text>
+  <text x="616" y="554" class="it">determined during recon</text>
+
+  <rect x="600" y="590" width="400" height="200" class="box"/>
+  <text x="616" y="616" class="hd">Action (two-dongle bidirectional relay)</text>
+  <text x="616" y="640" class="sm">nRF#2 as Peripheral: clones vehicle ad, lures phone</text>
+  <text x="616" y="664" class="sm">nRF#1 as Central: connects to real vehicle</text>
+  <text x="616" y="688" class="sm">relays application-layer PDUs — re-encrypts per hop:</text>
+  <text x="616" y="710" class="mo">  phone ↔ #2 one LTK / #1 ↔ car another LTK</text>
+  <text x="616" y="734" class="sm">challenge-response passes through verbatim</text>
+  <text x="616" y="760" class="it">app-layer crypto cannot stop it — the essence of relay</text>
+  <text x="616" y="782" class="it">Ellisys captures both hops live, validates relay</text>
+
+  <rect x="600" y="800" width="400" height="50" class="box"/>
+  <text x="616" y="820" class="sm" font-weight="700">Link holds with full function → no proximity binding</text>
+  <text x="616" y="838" class="it">(no UWB ranging / no enforced RSSI threshold)</text>
+
+  <!-- ============ Path 3 : Crypto Downgrade ============ -->
+  <rect x="1080" y="390" width="460" height="480" class="box2"/>
+  <text x="1104" y="422" class="st">Path 3: Protocol Flaw Exploitation</text>
+  <text x="1104" y="444" class="it">Hypothetical example: KNOB-class downgrade + nonce misuse</text>
+
+  <rect x="1110" y="460" width="400" height="110" class="box"/>
+  <text x="1126" y="486" class="hd">Precondition (hypothetical flaws)</text>
+  <text x="1126" y="510" class="sm">protocol design permits MitM-forced negotiation downgrade</text>
+  <text x="1126" y="532" class="sm">  (e.g. CVE-2019-9506 class: unbound key-length negotiation)</text>
+  <text x="1126" y="554" class="sm">implementation flaw in nonce generation / key derivation</text>
+
+  <rect x="1110" y="590" width="400" height="200" class="box"/>
+  <text x="1126" y="616" class="hd">Action (cryptographic attack)</text>
+  <text x="1126" y="640" class="sm">scan ads + trigger handshake → collect ciphertext pairs</text>
+  <text x="1126" y="664" class="sm">window-racing connect, repeatedly induce renegotiation</text>
+  <text x="1126" y="688" class="mo">  MitM-forced downgrade → brute-force small key space</text>
+  <text x="1126" y="712" class="mo">  nonce reuse → known-plaintext XOR → keystream recovery</text>
+  <text x="1126" y="736" class="mo">  GHASH H factorization → forged authentication tag</text>
+  <text x="1126" y="760" class="sm">recover session key → forge valid frames (probe → unlock → relock)</text>
+  <text x="1126" y="782" class="it">both protocol-design and implementation flaws — combined to be lethal</text>
+
+  <rect x="1110" y="800" width="400" height="50" class="box"/>
+  <text x="1126" y="820" class="sm" font-weight="700">Unlock succeeds → unbound negotiation + nonce uniqueness broken</text>
+  <text x="1126" y="838" class="it">strong link crypto cannot help — negotiation &amp; implementation flaws break AEAD</text>
+
+  <!-- ============ verdict ============ -->
+  <path d="M290,870 V920 H800 V960" class="arr" marker-end="url(#ar)"/>
+  <path d="M800,870 V960" class="arr" marker-end="url(#ar)"/>
+  <path d="M1310,870 V920 H800 V960" class="arr" marker-end="url(#ar)"/>
+
+  <rect x="420" y="960" width="760" height="200" class="box2"/>
+  <text x="800" y="992" text-anchor="middle" class="st">Verdict &amp; Output</text>
+  <text x="800" y="1020" text-anchor="middle" class="bd">any path succeeds → vulnerability confirmed, written to Playbook</text>
+  <text x="440" y="1054" class="sm">Path 1 → flaw: no freshness protection (no nonce / counter / timestamp)</text>
+  <text x="440" y="1080" class="sm">Path 2 → flaw: no proximity binding (no UWB ranging / RSSI threshold)</text>
+  <text x="440" y="1106" class="sm">Path 3 → flaw: unbound negotiation (KNOB-class) + nonce reuse / key derivation defect</text>
+  <text x="800" y="1140" text-anchor="middle" class="it">Three complementary paths — crypto strength only affects Path 1, not Paths 2 or 3</text>
+
+  <!-- footer -->
+  <text x="800" y="1230" text-anchor="middle" class="it" font-size="11">Hardware reuse: Ellisys observes throughout; nRF52840 #1 switches Observer / Central, #2 acts as Peripheral when needed</text>
+  <text x="800" y="1254" text-anchor="middle" class="it" font-size="11">Toolchain: Bumble scripted driving · custom AOSP ROM provides HookLogic-X observation primitives on the App side</text>
+
+  <!-- legend -->
+  <rect x="60" y="1300" width="480" height="130" class="box"/>
+  <text x="80" y="1330" class="hd">Legend</text>
+  <line x1="80" y1="1356" x2="130" y2="1356" class="arr" marker-end="url(#ar)"/>
+  <text x="142" y="1360" class="bd">solid arrow: control / data flow</text>
+  <line x1="80" y1="1388" x2="130" y2="1388" class="dot"/>
+  <text x="142" y="1392" class="bd">dotted: observation (non-intrusive)</text>
+</svg>

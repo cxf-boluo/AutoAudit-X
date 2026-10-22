@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="1520" viewBox="0 0 1520 1520">
+  <desc>AX Overall Architecture — Agent layer + three parallel support layers (ROM / Collaboration / Hardware), academic black-and-white line diagram</desc>
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="8" refX="7.5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#000"/>
+    </marker>
+    <style>
+      .box  { fill:none; stroke:#000000; stroke-width:1; }
+      .box2 { fill:none; stroke:#000000; stroke-width:1.6; }
+      .arr  { fill:none; stroke:#000000; stroke-width:1.5; }
+      .t1 { font:700 24px "Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; fill:#000; }
+      .ln { font:700 14px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .hd { font:700 14px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .bd { font:400 12px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .sm { font:400 11px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+      .mo { font:400 11px "SF Mono",Menlo,Consolas,"Courier New",monospace; fill:#000; }
+      .it { font:italic 400 10.5px "Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; fill:#000; }
+    </style>
+  </defs>
+
+  <!-- title -->
+  <text x="760" y="52" text-anchor="middle" class="t1">AX Overall Architecture: Agent + Parallel Supports (ROM · Collaboration · Hardware)</text>
+
+  <!-- ==================== Agent Layer (top, full-width) ==================== -->
+  <rect x="60" y="90" width="1400" height="560" class="box2"/>
+  <text x="86" y="370" text-anchor="middle" class="ln" transform="rotate(-90 86 370)">Agent Layer</text>
+
+  <!-- Brain -->
+  <rect x="140" y="120" width="1280" height="80" class="box"/>
+  <text x="156" y="152" class="hd">Brain (Orchestrator)</text>
+  <text x="156" y="180" class="bd">pool scheduling / resource arbitration / reflection</text>
+
+  <!-- recon -->
+  <rect x="140" y="220" width="600" height="120" class="box"/>
+  <text x="156" y="248" class="hd">recon <tspan class="bd" font-weight="400">(pre-recon, single serial instance)</tspan></text>
+  <text x="156" y="276" class="bd">packer identification → HookLogic-X unpack + decompile</text>
+  <text x="156" y="300" class="it">output: target profile / attack-surface inventory</text>
+
+  <!-- vuln_agent pool -->
+  <rect x="780" y="220" width="640" height="300" class="box"/>
+  <text x="796" y="248" class="hd">vuln_agent × N <tspan class="bd" font-weight="400">(elastic worker pool)</tspan></text>
+  <text x="796" y="272" class="sm">each worker paired with a dedicated toolkit instance</text>
+
+  <rect x="810" y="290" width="580" height="48" class="box"/>
+  <text x="824" y="310" class="mo">toolkit.cve_scan</text>
+  <text x="824" y="328" class="sm">CVE offline DB + online search</text>
+
+  <rect x="810" y="348" width="580" height="48" class="box"/>
+  <text x="824" y="368" class="mo">toolkit.traffic_audit</text>
+  <text x="824" y="386" class="sm">TLS key export + app-layer decryption</text>
+
+  <rect x="810" y="406" width="580" height="48" class="box"/>
+  <text x="824" y="426" class="mo">toolkit.phone_automation<tspan class="it"> [mutex]</tspan></text>
+  <text x="824" y="444" class="sm">adb + UI Automator</text>
+
+  <rect x="810" y="464" width="580" height="48" class="box"/>
+  <text x="824" y="484" class="mo">toolkit.ble_control<tspan class="it"> [mutex]</tspan></text>
+  <text x="824" y="502" class="sm">SDR + nRF52840 / Bumble</text>
+
+  <!-- verify -->
+  <rect x="140" y="360" width="600" height="160" class="box"/>
+  <text x="156" y="388" class="hd">verify <tspan class="bd" font-weight="400">(independent instance per component)</tspan></text>
+  <text x="156" y="414" class="bd">three-way isolation: information / perspective / model</text>
+  <text x="156" y="440" class="sm">independently re-examines vuln_agent conclusions</text>
+  <text x="156" y="462" class="sm">shields raw reasoning trace, evidence only</text>
+  <text x="156" y="484" class="sm">mitigates confirmation bias &amp; circular reasoning</text>
+
+  <!-- inner arrows within Agent layer -->
+  <path d="M440,200 V218" class="arr" marker-end="url(#ar)"/>
+  <path d="M1100,200 V218" class="arr" marker-end="url(#ar)"/>
+  <path d="M440,340 V358" class="arr" marker-end="url(#ar)"/>
+  <path d="M780,440 H742" class="arr" marker-end="url(#ar)"/>
+
+  <!-- ==================== Three parallel support layers ==================== -->
+  <!-- Down arrows from Agent layer to each support layer -->
+  <path d="M340,650 V700" class="arr" marker-end="url(#ar)"/>
+  <path d="M760,650 V700" class="arr" marker-end="url(#ar)"/>
+  <path d="M1240,650 V700" class="arr" marker-end="url(#ar)"/>
+
+  <!-- ==================== ROM Layer ==================== -->
+  <rect x="60" y="700" width="440" height="740" class="box2"/>
+  <text x="88" y="1070" text-anchor="middle" class="ln" transform="rotate(-90 88 1070)">ROM Layer</text>
+
+  <rect x="120" y="730" width="360" height="100" class="box"/>
+  <text x="136" y="756" class="hd" font-size="12">HookLogic-X System-Native Observation Substrate</text>
+  <text x="136" y="778" class="sm">Based on AOSP 14 (PixelBuilds fork, msm-4.14 kernel)</text>
+  <text x="136" y="798" class="sm">Pre-compiled system-level, full-stack (kernel → TLS lib)</text>
+
+  <rect x="120" y="830" width="360" height="120" class="box"/>
+  <text x="136" y="858" class="bd" font-weight="700">Kernel VFS source interception</text>
+  <text x="136" y="882" class="sm">Root hiding + anti-debug</text>
+  <text x="136" y="906" class="mo">fs/namei.c · fs/readdir.c</text>
+  <text x="136" y="926" class="mo">fs/proc/array.c · nlmsgtab.c</text>
+
+  <rect x="120" y="970" width="360" height="120" class="box"/>
+  <text x="136" y="998" class="bd" font-weight="700">ART three-phase injector</text>
+  <text x="136" y="1022" class="sm">zygote / early / stable phased unpacking</text>
+  <text x="136" y="1046" class="mo">art/runtime/pb_agent.cc</text>
+  <text x="136" y="1066" class="mo">libandroid_pb_v1.so</text>
+
+  <rect x="120" y="1110" width="360" height="120" class="box"/>
+  <text x="136" y="1138" class="bd" font-weight="700">Framework Pine Hook channel</text>
+  <text x="136" y="1162" class="sm">Java method-level hooking</text>
+  <text x="136" y="1186" class="mo">top.canyie.pin3</text>
+  <text x="136" y="1206" class="mo">boot classpath</text>
+
+  <rect x="120" y="1250" width="360" height="120" class="box"/>
+  <text x="136" y="1278" class="bd" font-weight="700">Conscrypt TLS key export</text>
+  <text x="136" y="1302" class="sm">traffic observation (keylog callback)</text>
+  <text x="136" y="1326" class="mo">native_crypto.cc</text>
+  <text x="136" y="1346" class="mo">SSL_CTX_set_keylog_callback</text>
+
+  <!-- ==================== Collaboration Layer ==================== -->
+  <rect x="540" y="700" width="440" height="740" class="box2"/>
+  <text x="568" y="1070" text-anchor="middle" class="ln" transform="rotate(-90 568 1070)">Collaboration</text>
+
+  <!-- Blackboard -->
+  <rect x="600" y="730" width="360" height="200" class="box"/>
+  <text x="616" y="758" class="hd">Blackboard</text>
+  <text x="616" y="784" class="sm">HEARSAY-II pattern · state-driven</text>
+  <text x="616" y="806" class="mo">workspace/&lt;pkg&gt;/</text>
+  <text x="616" y="830" class="sm">subscribe fields → self-trigger</text>
+  <text x="616" y="850" class="sm">fault isolation / knowledge sedimentation</text>
+  <text x="616" y="874" class="bd" font-weight="700">Five-state verdict status.json</text>
+  <text x="616" y="894" class="mo" font-size="10">confirmed / pending / refuted</text>
+  <text x="616" y="912" class="mo" font-size="10">/ not_applicable / needs_follow_up</text>
+
+  <!-- Shared Forum -->
+  <rect x="600" y="950" width="360" height="200" class="box"/>
+  <text x="616" y="978" class="hd">Shared Forum</text>
+  <text x="616" y="1004" class="sm">contract-based invocation · message-driven</text>
+  <text x="616" y="1026" class="mo">workspace/&lt;pkg&gt;/forum/</text>
+  <text x="616" y="1050" class="sm">lead broadcast / help coordination / counter-evidence</text>
+
+  <!-- Reporting protocol -->
+  <rect x="600" y="1170" width="360" height="160" class="box"/>
+  <text x="616" y="1196" class="hd" font-size="12.5">Reporting Protocol</text>
+  <text x="616" y="1220" class="mo" font-size="10">recon: Phase/Status/Evidence/Blocker</text>
+  <text x="616" y="1240" class="mo" font-size="10">vuln_agent: Component/Confidence/Evidence/Limits</text>
+  <text x="616" y="1260" class="mo" font-size="10">verify: Verdict/Confidence/Counter_Evidence</text>
+  <text x="616" y="1286" class="it" font-size="10">Confidence: mandatory cross-role field</text>
+  <text x="616" y="1310" class="it" font-size="10">PASSED → Playbook; FALSE_POSITIVE → anti-patterns</text>
+
+  <!-- ==================== Hardware Layer ==================== -->
+  <rect x="1020" y="700" width="440" height="740" class="box2"/>
+  <text x="1048" y="1070" text-anchor="middle" class="ln" transform="rotate(-90 1048 1070)">Hardware Layer</text>
+
+  <rect x="1080" y="730" width="360" height="140" class="box"/>
+  <text x="1096" y="758" class="hd">Test Device Pool</text>
+  <text x="1096" y="784" class="sm">Pixel 4</text>
+  <text x="1096" y="806" class="sm">flashed with HookLogic-X custom ROM</text>
+  <text x="1096" y="830" class="it">target execution environment</text>
+
+  <rect x="1080" y="890" width="360" height="200" class="box"/>
+  <text x="1096" y="918" class="hd">BLE Research Bench</text>
+  <text x="1096" y="944" class="bd" font-weight="700">· nRF52840 Dongle × 2</text>
+  <text x="1116" y="964" class="sm">Nordic NCS firmware, Central / Peripheral / Observer</text>
+  <text x="1096" y="990" class="bd" font-weight="700">· Ellisys Bluetooth Vanguard</text>
+  <text x="1116" y="1010" class="sm">professional air-interface sniffer (passive)</text>
+  <text x="1096" y="1036" class="bd" font-weight="700">· Google Bumble stack</text>
+  <text x="1116" y="1056" class="sm">cross-platform BLE control (Python, host-side)</text>
+
+  <rect x="1080" y="1110" width="360" height="140" class="box"/>
+  <text x="1096" y="1138" class="hd">Network</text>
+  <text x="1096" y="1164" class="sm">dedicated test network</text>
+  <text x="1096" y="1186" class="sm">isolated from production</text>
+  <text x="1096" y="1208" class="sm">traffic mirror / capture</text>
+</svg>
