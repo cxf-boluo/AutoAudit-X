@@ -466,7 +466,7 @@ HookLogic-X makes observation a system capability; the three-agent architecture 
 
 This represents a paradigm shift in AI-era mobile security auditing: from "expert craftsmanship" to "system-intrinsic engineering."
 
-![IMG_1230](docs/IMG_1230.png)
+![IMG_1230](docs/IMG_1230.jpg)
 
 ---
 
