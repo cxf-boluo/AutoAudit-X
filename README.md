@@ -81,7 +81,7 @@ Deemed by the vendor to duplicate an existing external report; no separate ID wa
 
 AX is organized into four layers — **Agent Layer**, **ROM Layer**, **Collaboration Layer**, and **Hardware Layer**:
 
-![AutoAudit-X overall architecture: Agent layer with ROM, collaboration, and hardware support](docs/architecture-en.svg)
+![architecture-en](docs/architecture-en.svg)
 
 Figure 1  AutoAudit-X overall architecture: Agent layer with ROM, collaboration, and hardware support
 
@@ -202,7 +202,7 @@ From the target app’s perspective:
 
 ### 3.3 Three-Agent Architecture: Fusion and Isolation
 
-![AX Agent-layer workflow: from reconnaissance to verdict](docs/agent-workflow-en.svg)
+![ax-agent-pipeline-en](docs/agent-workflow-en.svg)
 
 Figure 3  AX Agent-layer workflow: from reconnaissance to verdict
 
@@ -374,7 +374,7 @@ The BLE research bench is AX’s core software-hardware infrastructure, providin
 
 #### 3.5.3 Hardware Collaboration Workflow
 
-![BLE digital key three attack paths: replay / relay / protocol flaw exploitation](docs/ble-attack-paths-en.svg)
+![ble-attack-paths-en](docs/ble-attack-paths-en.svg)
 
 Figure 4  BLE digital key three attack paths: replay / relay / protocol flaw exploitation
 
@@ -421,7 +421,7 @@ AX has been validated at scale in authorized security research across multiple l
 
 verify independently re-reviewed with a different model and confirmed the findings were not false positives. Reproduced independently on Android BLE (nRF52840), Linux BlueZ, and macOS — **the attack chain is fully decoupled from the radio/host stack**.
 
-(Details withheld during the coordinated disclosure period)
+(During the coordinated disclosure period, details are withheld and will be explained in detail during the meeting.)
 
 ---
 
@@ -466,7 +466,9 @@ HookLogic-X makes observation a system capability; the three-agent architecture 
 
 This represents a paradigm shift in AI-era mobile security auditing: from "expert craftsmanship" to "system-intrinsic engineering."
 
----
+
+
+![IMG_1243](/Users/0range/workspace/demo/blackhat/assets/IMG_1243-2741606.png)
 
 ## Acknowledgments
 
