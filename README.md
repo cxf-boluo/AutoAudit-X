@@ -468,7 +468,7 @@ This represents a paradigm shift in AI-era mobile security auditing: from "exper
 
 
 
-![IMG_1243](/Users/0range/workspace/demo/blackhat/assets/IMG_1243-2741606.png)
+![IMG_1243](docs/IMG_1243.png)
 
 ## Acknowledgments
 
